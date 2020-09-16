@@ -48,7 +48,7 @@ export const Content = styled.section`
     align-items: center;
     transition: color 0.2s;
 
-    &: hover {
+    &:hover {
       color: ${shade(0.2, '#f4ede8')};
     }
 
