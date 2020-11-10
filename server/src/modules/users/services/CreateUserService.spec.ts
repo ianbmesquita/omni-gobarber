@@ -2,14 +2,20 @@ import 'reflect-metadata';
 
 import AppError from '@shared/errors/AppError';
 
+import MockHashProvider from '../providers/HashProvider/mocks/MockHashProvider';
+
 import MockUsersRepository from '../repositories/mocks/MockUsersRepository';
 import CreateUserService from './CreateUserService';
 
 describe('CreatUser', () => {
   it('should be able to create a new user.', async () => {
     const mockUsersRepository = new MockUsersRepository();
+    const mockHashProvider = new MockHashProvider();
 
-    const createUser = new CreateUserService(mockUsersRepository);
+    const createUser = new CreateUserService(
+      mockUsersRepository,
+      mockHashProvider,
+    );
 
     const user = await createUser.execute({
       name: 'teste',
@@ -22,8 +28,12 @@ describe('CreatUser', () => {
 
   it('should not be able to create two users with same email.', async () => {
     const mockUsersRepository = new MockUsersRepository();
+    const mockHashProvider = new MockHashProvider();
 
-    const createUser = new CreateUserService(mockUsersRepository);
+    const createUser = new CreateUserService(
+      mockUsersRepository,
+      mockHashProvider,
+    );
 
     await createUser.execute({
       name: 'teste 1',
