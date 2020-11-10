@@ -2,6 +2,7 @@
 node_modules/
 dist/
 build/
+coverage/
 
 storage/images/avatar/*
 !storage/images/avatar/.gitkeep
