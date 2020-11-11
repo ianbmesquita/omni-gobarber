@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-// import AppError from '@shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 
 import MockUsersRepository from '../repositories/mocks/MockUsersRepository';
 import MockHashProvider from '../providers/HashProvider/mocks/MockHashProvider';
@@ -35,5 +35,50 @@ describe('AuthenticateUser', () => {
 
     expect(response).toHaveProperty('token');
     expect(response.user).toEqual(user);
+  });
+
+  it('should not be able to authenticate with non existing user.', async () => {
+    const mockUsersRepository = new MockUsersRepository();
+    const mockHashProvider = new MockHashProvider();
+
+    const authenticateUser = new AuthenticateUserService(
+      mockUsersRepository,
+      mockHashProvider,
+    );
+
+    expect(
+      authenticateUser.execute({
+        email: 'teste@mail.com',
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('it should not be able to authenticate with wrong password.', async () => {
+    const mockUsersRepository = new MockUsersRepository();
+    const mockHashProvider = new MockHashProvider();
+
+    const authenticateUser = new AuthenticateUserService(
+      mockUsersRepository,
+      mockHashProvider,
+    );
+
+    const createUser = new CreateUserService(
+      mockUsersRepository,
+      mockHashProvider,
+    );
+
+    await createUser.execute({
+      name: 'teste 1',
+      email: 'teste@mail.com',
+      password: '123456',
+    });
+
+    expect(
+      authenticateUser.execute({
+        email: 'teste@mail.com',
+        password: 'wrong',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
