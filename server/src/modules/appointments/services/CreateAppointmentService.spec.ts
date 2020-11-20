@@ -5,14 +5,19 @@ import AppError from '@shared/errors/AppError';
 import MockAppontmentsRepository from '../repositories/mocks/MockAppointmentsRepository';
 import CreateAppointmentService from './CreateAppointmentService';
 
-describe('CreateAppointment', () => {
-  it('should be able to create a new appointment.', async () => {
-    const mockAppointmentsRepository = new MockAppontmentsRepository();
+let mockAppointmentsRepository: MockAppontmentsRepository;
+let createAppointment: CreateAppointmentService;
 
-    const createAppointment = new CreateAppointmentService(
+describe('CreateAppointment', () => {
+  beforeEach(() => {
+    mockAppointmentsRepository = new MockAppontmentsRepository();
+
+    createAppointment = new CreateAppointmentService(
       mockAppointmentsRepository,
     );
+  });
 
+  it('should be able to create a new appointment.', async () => {
     const appointment = await createAppointment.execute({
       date: new Date(),
       provider_id: '123456',
@@ -23,12 +28,6 @@ describe('CreateAppointment', () => {
   });
 
   it('should not be able to create two appointments on the same time.', async () => {
-    const mockAppointmentsRepository = new MockAppontmentsRepository();
-
-    const createAppointment = new CreateAppointmentService(
-      mockAppointmentsRepository,
-    );
-
     const appointmentDate = new Date();
 
     await createAppointment.execute({

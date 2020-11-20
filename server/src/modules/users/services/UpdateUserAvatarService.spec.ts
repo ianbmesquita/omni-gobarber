@@ -7,16 +7,22 @@ import MockStorageProvider from '@shared/container/providers/StorageProvider/moc
 import MockUsersRepository from '../repositories/mocks/MockUsersRepository';
 import UpdateUserAvatarService from './UpdateUserAvatarService';
 
-describe('UpdateUserAvatar', () => {
-  it('should be able to update a user avatar.', async () => {
-    const mockUsersRepository = new MockUsersRepository();
-    const mockStorageProvider = new MockStorageProvider();
+let mockUsersRepository: MockUsersRepository;
+let mockStorageProvider: MockStorageProvider;
+let updateUserAvatar: UpdateUserAvatarService;
 
-    const updateUserAvatar = new UpdateUserAvatarService(
+describe('UpdateUserAvatar', () => {
+  beforeEach(() => {
+    mockUsersRepository = new MockUsersRepository();
+    mockStorageProvider = new MockStorageProvider();
+
+    updateUserAvatar = new UpdateUserAvatarService(
       mockUsersRepository,
       mockStorageProvider,
     );
+  });
 
+  it('should be able to update a user avatar.', async () => {
     const user = await mockUsersRepository.create({
       name: 'teste',
       email: 'teste@mail.com',
@@ -32,14 +38,6 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should not be able to update avatar from non existent user.', async () => {
-    const mockUsersRepository = new MockUsersRepository();
-    const mockStorageProvider = new MockStorageProvider();
-
-    const updateUserAvatar = new UpdateUserAvatarService(
-      mockUsersRepository,
-      mockStorageProvider,
-    );
-
     expect(
       updateUserAvatar.execute({
         user_id: 'inexistent',
@@ -49,15 +47,7 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should be able to delete old avatar when updating new one.', async () => {
-    const mockUsersRepository = new MockUsersRepository();
-    const mockStorageProvider = new MockStorageProvider();
-
     const deleteFile = jest.spyOn(mockStorageProvider, 'deleteFile');
-
-    const updateUserAvatar = new UpdateUserAvatarService(
-      mockUsersRepository,
-      mockStorageProvider,
-    );
 
     const user = await mockUsersRepository.create({
       name: 'teste',
