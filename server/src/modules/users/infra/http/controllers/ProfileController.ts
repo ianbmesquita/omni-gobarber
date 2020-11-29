@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-
-import UserMap from '@modules/users/mappers/UserMap';
+import { classToClass } from 'class-transformer';
 
 import UpdateProfileService from '../../../services/UpdateProfileService';
 import ShowProfileController from '../../../services/ShowProfileService';
@@ -14,9 +13,7 @@ export default class ProfileController {
 
     const user = await showController.execute({ user_id });
 
-    const mappedUser = UserMap.toDTO(user);
-
-    return response.json(mappedUser);
+    return response.json(classToClass(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -33,8 +30,6 @@ export default class ProfileController {
       password,
     });
 
-    const mappedUser = UserMap.toDTO(user);
-
-    return response.json(mappedUser);
+    return response.json(classToClass(user));
   }
 }
