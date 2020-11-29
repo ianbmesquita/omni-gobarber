@@ -3,6 +3,8 @@ node_modules/
 dist/
 build/
 coverage/
+.env
+ormconfig.json
 
 storage/images/avatar/*
 !storage/images/avatar/.gitkeep
