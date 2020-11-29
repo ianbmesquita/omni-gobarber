@@ -3,9 +3,11 @@ import { Router } from 'express';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthentcated';
 
 import AppointmentsController from '../controllers/AppointmentsController';
+// import AppointmentsRepository from '../../typeorm/repositories/AppointmentsRepository';
 
 const appointmentsRouter = Router();
 const appointmentsController = new AppointmentsController();
+// const appointmentsRepository = new AppointmentsRepository();
 
 appointmentsRouter.use(ensureAuthenticated);
 
