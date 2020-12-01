@@ -5,12 +5,10 @@ import AppError from '@shared/errors/AppError';
 import MockUsersRepository from '../repositories/mocks/MockUsersRepository';
 import MockHashProvider from '../providers/HashProvider/mocks/MockHashProvider';
 import AuthenticateUserService from './AuthenticateUserService';
-import CreateUserService from './CreateUserService';
 
 let mockUsersRepository: MockUsersRepository;
 let mockHashProvider: MockHashProvider;
 let authenticateUser: AuthenticateUserService;
-let createUser: CreateUserService;
 
 describe('AuthenticateUser', () => {
   beforeEach(() => {
@@ -21,12 +19,10 @@ describe('AuthenticateUser', () => {
       mockUsersRepository,
       mockHashProvider,
     );
-
-    createUser = new CreateUserService(mockUsersRepository, mockHashProvider);
   });
 
   it('should be able to authenticate.', async () => {
-    const user = await createUser.execute({
+    const user = await mockUsersRepository.create({
       name: 'teste 1',
       email: 'teste@mail.com',
       password: '123456',
@@ -51,7 +47,7 @@ describe('AuthenticateUser', () => {
   });
 
   it('it should not be able to authenticate with wrong password.', async () => {
-    await createUser.execute({
+    await mockUsersRepository.create({
       name: 'teste 1',
       email: 'teste@mail.com',
       password: '123456',

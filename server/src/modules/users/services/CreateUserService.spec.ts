@@ -2,6 +2,7 @@ import 'reflect-metadata';
 
 import AppError from '@shared/errors/AppError';
 
+import MockCacheProvider from '@shared/container/providers/CacheProvider/mocks/MockCacheProvider';
 import MockHashProvider from '../providers/HashProvider/mocks/MockHashProvider';
 
 import MockUsersRepository from '../repositories/mocks/MockUsersRepository';
@@ -9,14 +10,20 @@ import CreateUserService from './CreateUserService';
 
 let mockUsersRepository: MockUsersRepository;
 let mockHashProvider: MockHashProvider;
+let mockCacheProvider: MockCacheProvider;
 let createUser: CreateUserService;
 
 describe('CreatUser', () => {
   beforeEach(() => {
     mockUsersRepository = new MockUsersRepository();
     mockHashProvider = new MockHashProvider();
+    mockCacheProvider = new MockCacheProvider();
 
-    createUser = new CreateUserService(mockUsersRepository, mockHashProvider);
+    createUser = new CreateUserService(
+      mockUsersRepository,
+      mockHashProvider,
+      mockCacheProvider,
+    );
   });
 
   it('should be able to create a new user.', async () => {

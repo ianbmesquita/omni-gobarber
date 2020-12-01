@@ -1,16 +1,21 @@
 import 'reflect-metadata';
 
+import MockCacheProvider from '@shared/container/providers/CacheProvider/mocks/MockCacheProvider';
 import MockUsersRepository from '@modules/users/repositories/mocks/MockUsersRepository';
 import ListProvidersService from './ListProvidersService';
 
 let mockUsersRepository: MockUsersRepository;
 let listProviders: ListProvidersService;
+let mockCacheProvider: MockCacheProvider;
 
 describe('ListProviders', () => {
   beforeEach(() => {
     mockUsersRepository = new MockUsersRepository();
-
-    listProviders = new ListProvidersService(mockUsersRepository);
+    mockCacheProvider = new MockCacheProvider();
+    listProviders = new ListProvidersService(
+      mockUsersRepository,
+      mockCacheProvider,
+    );
   });
 
   it('should be able to list the providers.', async () => {
