@@ -40,6 +40,7 @@
       "@typescript-eslint/ban-types": "off",
       "camelcase": "off",
       "prettier/prettier": "error",
+      "import/no-duplicates": "off",
       "import/extensions": [
         "error",
         "ignorePackages",
